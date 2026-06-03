@@ -5,221 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hyperspectral Food Analysis 教學 Demo</title>
   <style>
-    :root {
-      --ink: #1f2933;
-      --muted: #5b6773;
-      --line: #d8dee6;
-      --paper: #ffffff;
-      --soft: #f4f7f9;
-      --green: #2a9d8f;
-      --blue: #2f6f9f;
-      --gold: #c28b2c;
-      --red: #b5534d;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      color: var(--ink);
-      background: var(--paper);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.65;
-    }
-
-    header {
-      background: linear-gradient(120deg, #17324d, #2a6f73);
-      color: white;
-      padding: 42px 24px 34px;
-    }
-
-    header .wrap,
-    main {
-      width: min(1080px, calc(100% - 40px));
-      margin: 0 auto;
-    }
-
-    h1 {
-      margin: 0 0 12px;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      line-height: 1.12;
-      letter-spacing: 0;
-    }
-
-    header p {
-      max-width: 760px;
-      margin: 0;
-      color: #e7f1f4;
-      font-size: 1.08rem;
-    }
-
-    main {
-      padding: 28px 0 56px;
-    }
-
-    section {
-      padding: 26px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    h2 {
-      margin: 0 0 14px;
-      font-size: 1.65rem;
-      line-height: 1.25;
-    }
-
-    h3 {
-      margin: 26px 0 10px;
-      font-size: 1.18rem;
-    }
-
-    p {
-      margin: 0 0 14px;
-    }
-
-    a {
-      color: var(--blue);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 16px;
-    }
-
-    .card {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 16px;
-      background: var(--soft);
-    }
-
-    .card strong {
-      display: block;
-      margin-bottom: 6px;
-      color: #16324a;
-    }
-
-    .flow {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      margin: 14px 0;
-    }
-
-    .node {
-      border: 1px solid #c7d0d9;
-      background: white;
-      border-radius: 8px;
-      padding: 8px 10px;
-      min-height: 38px;
-    }
-
-    .arrow {
-      color: var(--muted);
-      font-weight: 700;
-    }
-
-    pre {
-      overflow-x: auto;
-      background: #111827;
-      color: #f8fafc;
-      border-radius: 8px;
-      padding: 14px 16px;
-      line-height: 1.55;
-    }
-
-    code {
-      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
-      font-size: 0.95em;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 14px 0;
-      font-size: 0.96rem;
-    }
-
-    th,
-    td {
-      border: 1px solid var(--line);
-      padding: 9px 10px;
-      text-align: left;
-      vertical-align: top;
-    }
-
-    th {
-      background: var(--soft);
-    }
-
-    .callout {
-      border-left: 5px solid var(--green);
-      background: #eef8f5;
-      padding: 14px 16px;
-      border-radius: 0 8px 8px 0;
-      margin: 14px 0;
-    }
-
-    .warn {
-      border-left-color: var(--gold);
-      background: #fff7e8;
-    }
-
-    .outputs {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .outputs img {
-      width: 100%;
-      min-height: 220px;
-      object-fit: contain;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fafafa;
-    }
-
-    ol,
-    ul {
-      padding-left: 1.35rem;
-    }
-
-    li {
-      margin: 6px 0;
-    }
-
-    footer {
-      color: var(--muted);
-      padding: 22px 0 0;
-      font-size: 0.95rem;
-    }
-
-    @media (max-width: 820px) {
-      .grid,
-      .outputs {
-        grid-template-columns: 1fr;
-      }
-
-      header .wrap,
-      main {
-        width: min(100% - 28px, 1080px);
-      }
-
-      .flow {
-        align-items: stretch;
-      }
-
-      .node {
-        flex: 1 1 42%;
-      }
-    }
+    :root { --ink:#1f2933; --muted:#5b6773; --line:#d8dee6; --soft:#f4f7f9; --blue:#2f6f9f; --green:#2a9d8f; --gold:#c28b2c; }
+    * { box-sizing: border-box; }
+    body { margin:0; color:var(--ink); font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; line-height:1.65; background:#fff; }
+    header { background:linear-gradient(120deg,#17324d,#2a6f73); color:white; padding:42px 24px 34px; }
+    header .wrap, main { width:min(1080px, calc(100% - 40px)); margin:0 auto; }
+    h1 { margin:0 0 12px; font-size:clamp(2rem,5vw,3.5rem); line-height:1.12; letter-spacing:0; }
+    header p { max-width:780px; margin:0; color:#e7f1f4; font-size:1.08rem; }
+    main { padding:28px 0 56px; }
+    section { padding:26px 0; border-bottom:1px solid var(--line); }
+    h2 { margin:0 0 14px; font-size:1.65rem; line-height:1.25; }
+    h3 { margin:24px 0 10px; font-size:1.18rem; }
+    a { color:var(--blue); }
+    pre { overflow-x:auto; background:#111827; color:#f8fafc; border-radius:8px; padding:14px 16px; line-height:1.55; }
+    code { font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace; font-size:.95em; }
+    table { width:100%; border-collapse:collapse; margin:14px 0; font-size:.96rem; }
+    th,td { border:1px solid var(--line); padding:9px 10px; text-align:left; vertical-align:top; }
+    th { background:var(--soft); }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:16px; }
+    .card { border:1px solid var(--line); border-radius:8px; padding:16px; background:var(--soft); }
+    .card strong { display:block; margin-bottom:6px; color:#16324a; }
+    .callout { border-left:5px solid var(--green); background:#eef8f5; padding:14px 16px; border-radius:0 8px 8px 0; margin:14px 0; }
+    .warn { border-left-color:var(--gold); background:#fff7e8; }
+    .flow { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:14px 0; }
+    .node { border:1px solid #c7d0d9; background:white; border-radius:8px; padding:8px 10px; min-height:38px; }
+    .arrow { color:var(--muted); font-weight:700; }
+    .outputs { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:12px; }
+    .outputs img { width:100%; min-height:220px; object-fit:contain; border:1px solid var(--line); border-radius:8px; background:#fafafa; }
+    @media (max-width:820px){ .grid,.outputs{grid-template-columns:1fr;} header .wrap,main{width:min(100% - 28px,1080px);} }
   </style>
 </head>
 <body>
@@ -234,18 +47,9 @@
     <section>
       <h2>1. 教學目標</h2>
       <div class="grid">
-        <div class="card">
-          <strong>認識資料</strong>
-          食品/農產品樣本的光譜 band 很多，每個 band 可視為一個特徵。
-        </div>
-        <div class="card">
-          <strong>Python Demo</strong>
-          建立下載、整理、視覺化、建模與評估的完整可重現流程。
-        </div>
-        <div class="card">
-          <strong>Orange Demo</strong>
-          用拖拉式 workflow 解釋特徵、target、模型與評估。
-        </div>
+        <div class="card"><strong>認識資料</strong>食品/農產品樣本的光譜 band 很多，每個 band 可視為一個特徵。</div>
+        <div class="card"><strong>Python Demo</strong>建立下載、整理、視覺化、建模與評估的完整可重現流程。</div>
+        <div class="card"><strong>Orange Demo</strong>用拖拉式 workflow 解釋特徵、target、模型與評估。</div>
       </div>
     </section>
 
@@ -253,30 +57,13 @@
       <h2>2. 使用資料集</h2>
       <p>本教材使用 <a href="https://zenodo.org/records/8362947">SpectroFood dataset</a>。資料包含 apple、broccoli、leek、mushroom 的 VIS-NIR hyperspectral measurements，並提供 dry matter content，可用於食品品質預測。</p>
       <table>
-        <thead>
-          <tr>
-            <th>欄位類型</th>
-            <th>在本教材中的用途</th>
-          </tr>
-        </thead>
+        <thead><tr><th>欄位類型</th><th>在本教材中的用途</th></tr></thead>
         <tbody>
-          <tr>
-            <td>光譜 band</td>
-            <td>模型特徵，整理後命名為 <code>wl_*</code></td>
-          </tr>
-          <tr>
-            <td>dry matter</td>
-            <td>回歸目標 <code>dry_matter_pct</code></td>
-          </tr>
-          <tr>
-            <td>crop / sample 資訊</td>
-            <td>分類目標或 metadata</td>
-          </tr>
+          <tr><td>光譜 band</td><td>模型特徵，整理後直接用實際波長命名，例如 <code>397.66</code>、<code>400.28</code>、<code>402.9</code></td></tr>
+          <tr><td>dry matter</td><td>回歸目標 <code>dry_matter_pct</code></td></tr>
+          <tr><td>crop</td><td>分類目標，class 應為 <code>leek</code>、<code>apple</code>、<code>broccoli</code>、<code>mushroom</code></td></tr>
         </tbody>
       </table>
-      <div class="callout warn">
-        如果要教「高光譜影像 cube 的 pixel 分類」，可另接 Indian Pines、Salinas-A、Pavia University 這類遙測資料；本教材先聚焦食品光譜與 Orange 最容易上手的表格格式。
-      </div>
     </section>
 
     <section>
@@ -284,62 +71,13 @@
       <p>最簡單的方式是在課程資料夾執行：</p>
       <pre><code>cd D:\course\food_analysis
 .\run_demo.ps1</code></pre>
-
-      <p>若想逐步教學，可分段執行以下指令：</p>
-      <pre><code>cd D:\course\food_analysis
-python -m venv .venv
-.\.venv\Scripts\activate
-pip install -r requirements.txt
-
-python scripts\01_download_spectrofood.py
+      <p>若想逐步教學，可分段執行：</p>
+      <pre><code>python scripts\01_download_spectrofood.py
 python scripts\02_prepare_spectrofood.py
+python scripts\04_fix_orange_crop_labels.py
+python scripts\05_rename_wavelength_columns.py
 python scripts\03_python_teaching_demo.py</code></pre>
-
-      <h3>Python workflow</h3>
-      <div class="flow" aria-label="Python workflow">
-        <span class="node">Download</span>
-        <span class="arrow">→</span>
-        <span class="node">Prepare table</span>
-        <span class="arrow">→</span>
-        <span class="node">Plot spectra</span>
-        <span class="arrow">→</span>
-        <span class="node">PCA</span>
-        <span class="arrow">→</span>
-        <span class="node">Regression</span>
-        <span class="arrow">→</span>
-        <span class="node">Classification</span>
-      </div>
-
-      <h3>輸出檔案</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>檔案</th>
-            <th>用途</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>data/processed/spectrofood_ml.csv</code></td>
-            <td>Python 分析用資料表</td>
-          </tr>
-          <tr>
-            <td><code>outputs/model_scores.csv</code></td>
-            <td>模型評估摘要</td>
-          </tr>
-          <tr>
-            <td><code>outputs/regression_predictions.csv</code></td>
-            <td>乾物率實際值與預測值</td>
-          </tr>
-          <tr>
-            <td><code>outputs/classification_report.txt</code></td>
-            <td>作物分類 precision、recall、F1</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h3>預期圖形</h3>
-      <p>執行 Python demo 後，下面的圖片路徑會自動產生。若目前還看不到圖片，先執行上一段指令。</p>
+      <div class="flow"><span class="node">Download</span><span class="arrow">→</span><span class="node">Prepare table</span><span class="arrow">→</span><span class="node">Repair labels</span><span class="arrow">→</span><span class="node">Rename wavelengths</span><span class="arrow">→</span><span class="node">Modeling</span></div>
       <div class="outputs">
         <img src="../outputs/01_mean_spectra_by_crop.png" alt="Mean spectra by crop">
         <img src="../outputs/03_pca_crop_scatter.png" alt="PCA crop scatter">
@@ -349,166 +87,30 @@ python scripts\03_python_teaching_demo.py</code></pre>
     </section>
 
     <section>
-      <h2>4. Python 教學講解</h2>
-      <h3>核心問題 A：可以用光譜預測 dry matter 嗎？</h3>
-      <p>用 <code>dry_matter_pct</code> 當 target，<code>wl_*</code> 當 features。範例中比較 PLS Regression 與 Random Forest Regression。</p>
-      <table>
-        <thead>
-          <tr>
-            <th>模型</th>
-            <th>教學重點</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>PLS Regression</td>
-            <td>光譜 band 高度相關，PLS 可用 latent components 同時做降維與回歸。</td>
-          </tr>
-          <tr>
-            <td>Random Forest Regression</td>
-            <td>非線性 baseline，能產生 band importance，方便討論哪些波段重要。</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h3>核心問題 B：可以用光譜辨識 crop 嗎？</h3>
-      <p>用 <code>crop</code> 當 target，模型輸出 accuracy 與 confusion matrix。這個 demo 很適合初學者理解分類模型。</p>
-
-      <h3>核心問題 C：模型真的能泛化嗎？</h3>
-      <p>程式另外輸出 <code>leave_one_crop_out_regression.csv</code>，每次留下一種 crop 當測試集。這比隨機切分更能提醒學生：高分不一定代表能套用到新作物或新批次。</p>
-    </section>
-
-    <section>
-      <h2>5. Orange Data Mining Demo</h2>
+      <h2>4. Orange Data Mining Demo</h2>
       <p>先用 Python 整理出 Orange 可讀的 `.tab` 檔，再用 Orange 建立 workflow。</p>
-
-      <h3>Orange 檔案</h3>
       <table>
-        <thead>
-          <tr>
-            <th>檔案</th>
-            <th>目標</th>
-          </tr>
-        </thead>
+        <thead><tr><th>檔案</th><th>目標</th></tr></thead>
         <tbody>
-          <tr>
-            <td><code>data/processed/spectrofood_regression_orange.tab</code></td>
-            <td>回歸：預測 <code>dry_matter_pct</code></td>
-          </tr>
-          <tr>
-            <td><code>data/processed/spectrofood_classification_orange.tab</code></td>
-            <td>分類：預測 <code>crop</code></td>
-          </tr>
+          <tr><td><code>data/processed/spectrofood_regression_orange.tab</code></td><td>回歸：預測 <code>dry_matter_pct</code></td></tr>
+          <tr><td><code>data/processed/spectrofood_classification_orange.tab</code></td><td>分類：預測 <code>crop</code></td></tr>
         </tbody>
       </table>
-
-      <h3>Demo A：乾物率回歸</h3>
-      <div class="flow" aria-label="Orange regression workflow">
-        <span class="node">File</span>
-        <span class="arrow">→</span>
-        <span class="node">Data Table</span>
-        <span class="arrow">→</span>
-        <span class="node">Select Columns</span>
-        <span class="arrow">→</span>
-        <span class="node">Preprocess</span>
-        <span class="arrow">→</span>
-        <span class="node">PLS / Random Forest</span>
-        <span class="arrow">→</span>
-        <span class="node">Test and Score</span>
-        <span class="arrow">→</span>
-        <span class="node">Predictions</span>
-      </div>
-      <ol>
-        <li>在 <code>File</code> 載入 <code>spectrofood_regression_orange.tab</code>。</li>
-        <li>確認 <code>wl_*</code> 是 features，<code>dry_matter_pct</code> 是 target，<code>sample_id</code> 與 <code>crop</code> 是 meta。</li>
-        <li>加上 <code>Preprocess</code>，建議做 standardization。</li>
-        <li>加入 <code>PLS</code> 與 <code>Random Forest</code>。</li>
-        <li>用 <code>Test and Score</code> 選 5-fold cross validation，觀察 RMSE、MAE、R2。</li>
-      </ol>
-
-      <h3>Demo B：作物分類</h3>
-      <div class="flow" aria-label="Orange classification workflow">
-        <span class="node">File</span>
-        <span class="arrow">→</span>
-        <span class="node">PCA</span>
-        <span class="arrow">→</span>
-        <span class="node">Scatter Plot</span>
-        <span class="arrow">→</span>
-        <span class="node">Random Forest / SVM</span>
-        <span class="arrow">→</span>
-        <span class="node">Test and Score</span>
-        <span class="arrow">→</span>
-        <span class="node">Confusion Matrix</span>
-      </div>
-      <ol>
-        <li>在 <code>File</code> 載入 <code>spectrofood_classification_orange.tab</code>。</li>
-        <li>用 <code>PCA</code> 與 <code>Scatter Plot</code> 看不同 crop 是否分群。</li>
-        <li>加入 <code>Random Forest</code> 或 <code>SVM</code>。</li>
-        <li>用 <code>Test and Score</code> 比較模型，再用 <code>Confusion Matrix</code> 看錯分情形。</li>
-      </ol>
-
-      <div class="callout">
-        Orange-Spectroscopy add-on 可補充 <code>Spectra</code>、<code>Preprocess Spectra</code>、<code>PLS</code> 等 widget。若學生剛開始學，先用本教材的表格版流程會更順。
-      </div>
+      <div class="callout warn">若 class 是 <code>l1</code>、<code>l2</code>、<code>l3</code> 這類樣本代碼，請執行 <code>.\fix_orange_crop_labels.ps1</code>。</div>
+      <div class="callout warn">若欄位名稱是 <code>wl_397_66</code>，請執行 <code>.\fix_wavelength_column_names.ps1</code>。修正後欄位會顯示 <code>397.66</code>、<code>400.28</code>、<code>402.9</code>。</div>
+      <h3>乾物率回歸</h3>
+      <div class="flow"><span class="node">File</span><span class="arrow">→</span><span class="node">Select Columns</span><span class="arrow">→</span><span class="node">Preprocess</span><span class="arrow">→</span><span class="node">PLS / Random Forest</span><span class="arrow">→</span><span class="node">Test and Score</span></div>
+      <p>Features 選實際波長欄位，例如 <code>397.66</code>、<code>400.28</code>；Target 選 <code>dry_matter_pct</code>。</p>
+      <h3>作物分類</h3>
+      <div class="flow"><span class="node">File</span><span class="arrow">→</span><span class="node">PCA</span><span class="arrow">→</span><span class="node">Scatter Plot</span><span class="arrow">→</span><span class="node">Random Forest / SVM</span><span class="arrow">→</span><span class="node">Confusion Matrix</span></div>
+      <p>Features 選實際波長欄位；Target 選 <code>crop</code>，其值應為 <code>leek</code>、<code>apple</code>、<code>broccoli</code>、<code>mushroom</code>。</p>
     </section>
 
     <section>
-      <h2>6. 課堂活動建議</h2>
-      <ol>
-        <li>先讓學生看 mean spectra，猜哪些 crop 光譜差異最大。</li>
-        <li>用 PCA scatter plot 討論「視覺分群」與「模型分類」的差別。</li>
-        <li>比較 PLS 與 Random Forest 的 dry matter 預測結果。</li>
-        <li>把 random split 改成 leave-one-crop-out，討論為什麼泛化能力下降。</li>
-        <li>在 Orange 中重建相同分析，讓學生理解 workflow 與 Python 程式是同一件事的兩種表達方式。</li>
-      </ol>
+      <h2>5. 打包與 GitHub 發佈</h2>
+      <pre><code>.\package_demo.ps1
+.\publish_to_github.ps1 -Owner Tai-ShengYeh -RepoName hyperspectral-food-analysis-demo</code></pre>
     </section>
-
-    <section>
-      <h2>7. 檔案總覽</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>路徑</th>
-            <th>說明</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>scripts/01_download_spectrofood.py</code></td>
-            <td>下載 Zenodo 公開資料</td>
-          </tr>
-          <tr>
-            <td><code>scripts/02_prepare_spectrofood.py</code></td>
-            <td>偵測 target、crop、spectral columns，輸出 Python 與 Orange 格式</td>
-          </tr>
-          <tr>
-            <td><code>scripts/03_python_teaching_demo.py</code></td>
-            <td>產生圖形與模型評估</td>
-          </tr>
-          <tr>
-            <td><code>orange/Orange_Data_Mining_操作流程.md</code></td>
-            <td>Orange 操作講義</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section>
-      <h2>8. 打包與 GitHub 發佈</h2>
-      <h3>打包成教室用 zip</h3>
-      <pre><code>cd D:\course\food_analysis
-.\package_demo.ps1</code></pre>
-      <p>完成後會產生 <code>dist\hyperspectral-food-analysis-demo.zip</code>。這個壓縮檔可帶到另一台電腦使用。</p>
-
-      <h3>發佈到 GitHub</h3>
-      <pre><code>gh auth login
-.\publish_to_github.ps1 -Owner 你的GitHub帳號 -RepoName hyperspectral-food-analysis-demo</code></pre>
-      <p>repo 內含 GitHub Pages workflow。推送後在 GitHub repo 的 <code>Settings &gt; Pages</code> 選擇 <code>GitHub Actions</code>，即可部署教學 HTML。</p>
-    </section>
-
-    <footer>
-      Data source: SpectroFood dataset, Zenodo record 8362947. 本教材檔案位於 D:\course\food_analysis。
-    </footer>
   </main>
 </body>
 </html>
