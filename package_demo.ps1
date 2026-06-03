@@ -42,6 +42,8 @@ $Items = @(
     "README.md",
     "requirements.txt",
     "run_demo.ps1",
+    "fix_orange_crop_labels.ps1",
+    "fix_wavelength_column_names.ps1",
     "package_demo.ps1",
     "publish_to_github.ps1",
     "index.html"
@@ -60,7 +62,9 @@ Hyperspectral Food Analysis Teaching Demo
 
 1. Open docs\hyperspectral_food_teaching_demo.html to view the lesson.
 2. If Python is available, run .\run_demo.ps1 to rebuild all outputs.
-3. Orange files are in data\processed:
+3. If class labels show l1/l2/l3, run .\fix_orange_crop_labels.ps1.
+4. If wavelength columns show wl_397_66, run .\fix_wavelength_column_names.ps1.
+5. Orange files are in data\processed:
    - spectrofood_regression_orange.tab
    - spectrofood_classification_orange.tab
 
