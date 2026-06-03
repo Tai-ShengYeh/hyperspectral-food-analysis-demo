@@ -81,6 +81,8 @@ Invoke-Checked "git" "add" `
     README.md `
     requirements.txt `
     run_demo.ps1 `
+    fix_orange_crop_labels.ps1 `
+    fix_wavelength_column_names.ps1 `
     package_demo.ps1 `
     publish_to_github.ps1 `
     index.html `
