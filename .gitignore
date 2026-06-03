@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+data/raw/SpectroFood_dataset.csv
+data/processed/*.csv
+data/processed/*.tab
+data/processed/*.json
+outputs/
+dist/
