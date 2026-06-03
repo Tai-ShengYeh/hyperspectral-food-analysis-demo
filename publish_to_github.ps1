@@ -40,6 +40,22 @@ function Invoke-Capture {
     return ($Output -join "`n")
 }
 
+function Test-GitStagedChanges {
+    & git diff --cached --quiet
+    if ($LASTEXITCODE -eq 0) {
+        return $false
+    }
+    if ($LASTEXITCODE -eq 1) {
+        return $true
+    }
+    throw "Command failed with exit code $LASTEXITCODE`: git diff --cached --quiet"
+}
+
+function Test-GitHasCommit {
+    & git rev-parse --verify HEAD *> $null
+    return ($LASTEXITCODE -eq 0)
+}
+
 function Require-Command($Name, $InstallHint) {
     if (-not (Get-Command $Name -ErrorAction SilentlyContinue)) {
         throw "$Name is required. $InstallHint"
@@ -74,11 +90,14 @@ Invoke-Checked "git" "add" `
     data/raw/README.md `
     data/processed/README.md
 
-$HasChanges = Invoke-Capture "git" "status" "--porcelain"
-if ($null -ne $HasChanges -and $HasChanges.Trim().Length -gt 0) {
+if (Test-GitStagedChanges) {
     Invoke-Checked "git" "commit" "-m" "Add hyperspectral food analysis teaching demo"
 } else {
-    Write-Host "No local changes to commit."
+    Write-Host "No staged teaching-demo changes to commit."
+}
+
+if (-not (Test-GitHasCommit)) {
+    throw "This repository has no commit yet. Check whether the teaching-demo files exist, then run this script again."
 }
 
 $RepoFullName = $RepoName
