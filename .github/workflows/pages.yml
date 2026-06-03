@@ -36,6 +36,8 @@ jobs:
         run: |
           python scripts/01_download_spectrofood.py
           python scripts/02_prepare_spectrofood.py
+          python scripts/04_fix_orange_crop_labels.py
+          python scripts/05_rename_wavelength_columns.py
           python scripts/03_python_teaching_demo.py
 
       - name: Assemble static site
@@ -66,4 +68,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
