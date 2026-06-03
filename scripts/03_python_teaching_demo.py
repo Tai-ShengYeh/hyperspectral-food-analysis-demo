@@ -22,7 +22,7 @@ from sklearn.metrics import (
     mean_squared_error,
     r2_score,
 )
-from sklearn.model_selection import GroupKFold, StratifiedKFold, train_test_split
+from sklearn.model_selection import GroupKFold, train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
@@ -32,6 +32,17 @@ PROCESSED_DIR = ROOT / "data" / "processed"
 OUTPUT_DIR = ROOT / "outputs"
 ML_FILE = PROCESSED_DIR / "spectrofood_ml.csv"
 METADATA_FILE = PROCESSED_DIR / "spectrofood_metadata.json"
+
+
+def is_spectral_column(col: str) -> bool:
+    text = str(col)
+    if text.startswith("wl_") or text.startswith("band_"):
+        return True
+    try:
+        value = float(text)
+    except ValueError:
+        return False
+    return 350 <= value <= 2500
 
 
 def safe_pls_components(n_samples: int, n_features: int, preferred: int = 12) -> int:
@@ -64,7 +75,7 @@ def plot_mean_spectra(df: pd.DataFrame, features: list[str], wavelengths: list[f
         plt.plot(wavelengths, mean, label=crop)
         plt.fill_between(wavelengths, mean - sd, mean + sd, alpha=0.12)
     plt.title("Mean VIS-NIR spectra by crop")
-    plt.xlabel("Wavelength or spectral band")
+    plt.xlabel("Wavelength (nm)")
     plt.ylabel("Reflectance / intensity")
     plt.legend(title="Crop")
     plt.tight_layout()
@@ -301,16 +312,19 @@ def train_classifier(df: pd.DataFrame, features: list[str], wavelengths: list[fl
 
 def main(argv: list[str] | None = None) -> None:
     if not ML_FILE.exists() or not METADATA_FILE.exists():
-        raise SystemExit(
-            "Prepared data is missing. Run scripts/02_prepare_spectrofood.py first."
-        )
+        raise SystemExit("Prepared data is missing. Run scripts/02_prepare_spectrofood.py first.")
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     sns.set_theme(style="whitegrid")
 
     df = pd.read_csv(ML_FILE)
     metadata = json.loads(METADATA_FILE.read_text(encoding="utf-8"))
-    features = [col for col in df.columns if col.startswith("wl_")]
+    metadata_features = metadata.get("feature_columns") or []
+    if metadata_features and all(col in df.columns for col in metadata_features):
+        features = metadata_features
+    else:
+        features = [col for col in df.columns if is_spectral_column(col)]
+
     features = [
         col
         for col in features
