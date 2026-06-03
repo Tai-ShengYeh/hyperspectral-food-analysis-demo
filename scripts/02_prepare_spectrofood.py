@@ -5,7 +5,6 @@ import re
 import sys
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 
 
@@ -13,8 +12,18 @@ ROOT = Path(__file__).resolve().parents[1]
 RAW_FILE = ROOT / "data" / "raw" / "SpectroFood_dataset.csv"
 PROCESSED_DIR = ROOT / "data" / "processed"
 
-
 CROP_NAMES = ["apple", "broccoli", "leek", "mushroom"]
+LABEL_PREFIX_TO_CROP = {
+    "a": "apple",
+    "ap": "apple",
+    "b": "broccoli",
+    "br": "broccoli",
+    "broc": "broccoli",
+    "l": "leek",
+    "le": "leek",
+    "m": "mushroom",
+    "mu": "mushroom",
+}
 
 
 def normalize_name(value: object) -> str:
@@ -23,6 +32,28 @@ def normalize_name(value: object) -> str:
     text = re.sub(r"[^0-9A-Za-z]+", "_", text)
     text = re.sub(r"_+", "_", text).strip("_")
     return text.lower() or "unnamed"
+
+
+def infer_crop_from_text(value: object) -> str | None:
+    text = str(value).strip().lower()
+    if not text or text == "nan":
+        return None
+
+    for crop in CROP_NAMES:
+        if crop in text:
+            return crop
+
+    normalized = normalize_name(text)
+    match = re.match(r"^([a-z]+)_?\d+$", normalized)
+    if match:
+        prefix = match.group(1)
+        if prefix in LABEL_PREFIX_TO_CROP:
+            return LABEL_PREFIX_TO_CROP[prefix]
+        first_letter = prefix[:1]
+        if first_letter in LABEL_PREFIX_TO_CROP:
+            return LABEL_PREFIX_TO_CROP[first_letter]
+
+    return None
 
 
 def coerce_numeric_series(series: pd.Series) -> pd.Series:
@@ -73,27 +104,32 @@ def detect_target_column(df: pd.DataFrame) -> str:
 
 
 def detect_crop_column(df: pd.DataFrame) -> str | None:
+    scored_columns = []
     for col in df.columns:
-        values = df[col].astype(str).str.lower()
-        hits = sum(values.str.contains(name, regex=False).any() for name in CROP_NAMES)
-        if hits >= 2:
-            return str(col)
+        inferred = df[col].map(infer_crop_from_text)
+        known_ratio = inferred.notna().mean()
+        known_crops = inferred.dropna().nunique()
+        if known_ratio >= 0.5 and known_crops >= 1:
+            scored_columns.append((known_crops, known_ratio, str(col)))
+
+    if scored_columns:
+        scored_columns.sort(reverse=True)
+        return scored_columns[0][2]
+
     return None
 
 
 def extract_crop(row: pd.Series, crop_col: str | None) -> str:
     if crop_col is not None:
-        text = str(row[crop_col]).lower()
-        for crop in CROP_NAMES:
-            if crop in text:
-                return crop
-        cleaned = normalize_name(row[crop_col])
-        return cleaned or "unknown"
+        crop = infer_crop_from_text(row[crop_col])
+        if crop is not None:
+            return crop
 
     combined = " ".join(str(value).lower() for value in row.values)
-    for crop in CROP_NAMES:
-        if crop in combined:
-            return crop
+    crop = infer_crop_from_text(combined)
+    if crop is not None:
+        return crop
+
     return "unknown"
 
 
@@ -107,6 +143,10 @@ def parse_wavelength_from_column(col: str) -> float | None:
     if 350 <= value <= 2500:
         return value
     return None
+
+
+def format_wavelength_name(wavelength: float) -> str:
+    return f"{wavelength:.6f}".rstrip("0").rstrip(".")
 
 
 def detect_spectral_columns(df: pd.DataFrame, target_col: str, crop_col: str | None) -> list[str]:
@@ -196,9 +236,7 @@ def write_orange_tab(
 
 def main(argv: list[str] | None = None) -> None:
     if not RAW_FILE.exists():
-        raise SystemExit(
-            f"Missing {RAW_FILE}. Run scripts/01_download_spectrofood.py first."
-        )
+        raise SystemExit(f"Missing {RAW_FILE}. Run scripts/01_download_spectrofood.py first.")
 
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -220,9 +258,9 @@ def main(argv: list[str] | None = None) -> None:
         wavelength = parse_wavelength_from_column(col)
         wavelengths.append(wavelength if wavelength is not None else float(index))
         if wavelength is not None:
-            feature_name = f"wl_{wavelength:g}".replace(".", "_")
+            feature_name = format_wavelength_name(wavelength)
         else:
-            feature_name = f"wl_{index:03d}"
+            feature_name = f"band_{index:03d}"
         while feature_name in ml.columns or feature_name in wavelength_names:
             feature_name = f"{feature_name}_{index}"
         wavelength_names.append(feature_name)
@@ -237,10 +275,7 @@ def main(argv: list[str] | None = None) -> None:
     if len(usable_wavelength_names) < 5:
         raise ValueError("Too few usable spectral columns after numeric conversion.")
     wavelength_names = usable_wavelength_names
-    wavelengths = [
-        all_wavelengths[all_wavelength_names.index(name)]
-        for name in wavelength_names
-    ]
+    wavelengths = [all_wavelengths[all_wavelength_names.index(name)] for name in wavelength_names]
     spectral_medians = ml[wavelength_names].median(numeric_only=True)
     ml[wavelength_names] = ml[wavelength_names].fillna(spectral_medians)
 
